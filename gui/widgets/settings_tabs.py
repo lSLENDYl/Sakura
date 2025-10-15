@@ -419,7 +419,7 @@ class ModulesTab(QScrollArea):
     
     def test_tts(self):
         """Тест синтеза речи"""
-        from ...tts.silero_tts import SileroTTS
+        from tts.silero_tts import SileroTTS
         
         try:
             tts = SileroTTS()
@@ -429,7 +429,7 @@ class ModulesTab(QScrollArea):
     
     def test_microphone(self):
         """Тест микрофона"""
-        from ...stt.vosk_stt import VoskSTT
+        from stt.vosk_stt import VoskSTT
         
         try:
             stt = VoskSTT()

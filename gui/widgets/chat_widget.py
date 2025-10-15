@@ -112,12 +112,13 @@ class ChatWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.messages = []
-        self.setup_ui()
-        
+
         # Таймер для автопрокрутки
         self.scroll_timer = QTimer()
         self.scroll_timer.setSingleShot(True)
         self.scroll_timer.timeout.connect(self.scroll_to_bottom)
+        
+        self.setup_ui()
     
     def setup_ui(self):
         """Настройка интерфейса чата"""
