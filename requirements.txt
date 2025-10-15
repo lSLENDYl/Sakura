@@ -1,0 +1,27 @@
+# GUI Framework
+PyQt5==5.15.10
+
+# AI & Machine Learning
+ollama==0.3.3
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# Text-to-Speech
+silero-tts>=0.0.0
+
+# Speech-to-Text
+vosk>=0.3.0
+
+# Audio Processing
+pyaudio>=0.2.11
+sounddevice>=0.4.6
+numpy>=1.21.0
+
+# Configuration
+pyyaml>=6.0
+
+# Logging and Utils
+colorlog>=6.7.0
+
+# Optional: For better model management
+omegaconf>=2.1.0
