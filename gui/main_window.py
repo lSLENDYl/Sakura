@@ -530,3 +530,144 @@ class MainWindow(QMainWindow):
                 self.current_response_thread.wait()
             
             event.accept()
+    def apply_theme(self, theme: str):
+        """Применение темы (расширенная версия)"""
+        if theme == 'dark':
+            self.setStyleSheet("""
+                QMainWindow {
+                    background-color: #2b2b2b;
+                    color: #ffffff;
+                }
+                QTextEdit {
+                    background-color: #3c3c3c;
+                    color: #ffffff;
+                    border: 1px solid #555555;
+                }
+                QLineEdit {
+                    background-color: #3c3c3c;
+                    color: #ffffff;
+                    border: 1px solid #555555;
+                    padding: 5px;
+                }
+                QStatusBar {
+                    background-color: #353535;
+                    color: #ffffff;
+                }
+            """)
+        elif theme == 'light':
+            self.setStyleSheet("""
+                QMainWindow {
+                    background-color: #ffffff;
+                    color: #000000;
+                }
+                QTextEdit {
+                    background-color: #ffffff;
+                    color: #000000;
+                    border: 1px solid #cccccc;
+                }
+                QLineEdit {
+                    background-color: #ffffff;
+                    color: #000000;
+                    border: 1px solid #cccccc;
+                    padding: 5px;
+                }
+                QStatusBar {
+                    background-color: #f0f0f0;
+                    color: #000000;
+                }
+            """)
+        
+        # Применяем тему к виджету чата
+        self.chat_widget.apply_theme(theme)
+        
+        logger.info(f"Тема изменена на: {theme}")
+
+    def on_settings_changed(self):
+        """Обработчик изменения настроек"""
+        logger.info("Получен сигнал об изменении настроек")
+        
+        # Перезагружаем настройки компонентов
+        self.reload_component_settings()
+        
+        # Обновляем статус компонентов
+        QTimer.singleShot(1000, self.check_components)
+
+    def reload_component_settings(self):
+        """Перезагружает настройки всех компонентов"""
+        try:
+            # Обновляем настройки личности
+            if hasattr(self, 'ollama_client'):
+                self.ollama_client.system_prompt = config.get('personality.system_prompt', '')
+                self.ollama_client.max_history = config.get('personality.conversation_memory', 50)
+            
+            # Применяем настройки GUI
+            self.load_settings()
+            
+            logger.info("Настройки компонентов перезагружены")
+            
+        except Exception as e:
+            logger.error(f"Ошибка перезагрузки настроек: {e}")
+
+    ## Измените метод show_settings:
+
+    def show_settings(self):
+        """Показать настройки (обновленная версия)"""
+        dialog = SettingsDialog(self)
+        
+        # ПОДКЛЮЧАЕМ СИГНАЛ применения настроек
+        dialog.settings_changed.connect(self.on_settings_changed)
+        
+        if dialog.exec_() == dialog.Accepted:
+            # Настройки уже применены через сигнал
+            logger.info("Диалог настроек закрыт с применением")
+
+    ## Добавьте в ChatWidget метод apply_theme:
+
+    def apply_theme(self, theme: str):
+        """Применение темы к виджету чата"""
+        if theme == 'dark':
+            self.setStyleSheet("""
+                QScrollArea {
+                    border: none;
+                    background-color: #2b2b2b;
+                }
+                QWidget {
+                    background-color: #2b2b2b;
+                }
+                QScrollBar:vertical {
+                    background-color: #3c3c3c;
+                    width: 12px;
+                    border-radius: 6px;
+                }
+                QScrollBar::handle:vertical {
+                    background-color: #606060;
+                    border-radius: 6px;
+                    min-height: 20px;
+                }
+                QScrollBar::handle:vertical:hover {
+                    background-color: #707070;
+                }
+            """)
+        elif theme == 'light':
+            self.setStyleSheet("""
+                QScrollArea {
+                    border: none;
+                    background-color: #ffffff;
+                }
+                QWidget {
+                    background-color: #ffffff;
+                }
+                QScrollBar:vertical {
+                    background-color: #f0f0f0;
+                    width: 12px;
+                    border-radius: 6px;
+                }
+                QScrollBar::handle:vertical {
+                    background-color: #c0c0c0;
+                    border-radius: 6px;
+                    min-height: 20px;
+                }
+                QScrollBar::handle:vertical:hover {
+                    background-color: #a0a0a0;
+                }
+            """)
